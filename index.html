@@ -36,38 +36,34 @@
             z-index: 9999;
         }
     </style>
-    <!-- Dodanie biblioteki Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Dodanie wtyczki do wyświetlania wartości na wykresie -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <!-- Dodanie biblioteki do konfetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <h1>Procent Zebranej Kwoty</h1>
-    <h2>Zbieramy na samochód!</h2>
-    <p>Potrzebujesz zebrać 40,000 zł, zebrano już 6,000 zł.</p>
-    <p>To jest 15% zebranej kwoty. Brakuje jeszcze 85%, czyli 34,000 zł.</p>
+    <h2 id="main-title">Zbieramy na samochód!</h2>
+    <p id="amount-info">Potrzebujesz zebrać 40,000 zł, zebrano już 6,000 zł.</p>
+    <p id="percentage-info">To jest 15% zebranej kwoty. Brakuje jeszcze 85%, czyli 34,000 zł.</p>
     <div id="chartContainer">
         <canvas id="myChart"></canvas>
     </div>
     <canvas id="confetti-canvas"></canvas>
 
     <script>
-        // Dane do wykresu
         const kwotaDocelowa = 40000;
-        const kwotaZebrana = 40000;  // Zmień tę wartość na 40000, aby przetestować konfetti
+        const kwotaZebrana = 6000;  // Zmień na 40000, aby przetestować konfetti
         const kwotaBrakujaca = kwotaDocelowa - kwotaZebrana;
         const procentZebrane = (kwotaZebrana / kwotaDocelowa) * 100;
         const procentPozostale = 100 - procentZebrane;
 
-        // Sprawdzenie, czy zebrano całą kwotę
+        // Sprawdzenie, czy kwota docelowa została osiągnięta
         if (kwotaZebrana >= kwotaDocelowa) {
-            document.querySelector("h2").innerHTML = "Gratulacje! Zebraliśmy całą kwotę na samochód!";
-            document.querySelector("p:nth-of-type(2)").style.display = "none";  // Ukrycie informacji o brakujących środkach
+            document.getElementById("main-title").innerHTML = "Gratulacje! Zebraliśmy całą kwotę na samochód!";
+            document.getElementById("amount-info").style.display = "none";  // Ukrycie informacji o potrzebnej kwocie
+            document.getElementById("percentage-info").style.display = "none"; // Ukrycie informacji o brakujących środkach
 
             // Uruchomienie konfetti
-            const confettiCanvas = document.getElementById('confetti-canvas');
             confetti({
                 particleCount: 200,
                 spread: 70,
@@ -75,6 +71,10 @@
                 useWorker: true,
                 resize: true
             });
+        } else {
+            // Aktualizacja tekstu, gdy nie osiągnięto celu
+            document.getElementById("amount-info").innerHTML = `Potrzebujesz zebrać 40,000 zł, zebrano już ${kwotaZebrana.toLocaleString()} zł.`;
+            document.getElementById("percentage-info").innerHTML = `To jest ${procentZebrane.toFixed(1)}% zebranej kwoty. Brakuje jeszcze ${procentPozostale.toFixed(1)}%, czyli ${kwotaBrakujaca.toLocaleString()} zł.`;
         }
 
         // Generowanie wykresu
@@ -93,27 +93,16 @@
             options: {
                 responsive: true,
                 plugins: {
-                    legend: {
-                        position: 'top',
-                    },
+                    legend: { position: 'top' },
                     datalabels: {
                         color: '#fff',
-                        formatter: (value, context) => {
-                            return value.toFixed(1) + '%'; // Wyświetlenie wartości w procentach
-                        },
-                        font: {
-                            weight: 'bold'
-                        }
+                        formatter: (value) => value.toFixed(1) + '%',
+                        font: { weight: 'bold' }
                     }
                 }
             },
-            plugins: [ChartDataLabels] // Włączenie wtyczki
+            plugins: [ChartDataLabels] 
         });
-
-        // Aktualizacja tekstu na stronie
-        if (kwotaZebrana < kwotaDocelowa) {
-            document.querySelector("p:nth-of-type(2)").innerHTML = `To jest ${procentZebrane.toFixed(1)}% zebranej kwoty. Brakuje jeszcze ${procentPozostale.toFixed(1)}%, czyli ${kwotaBrakujaca.toLocaleString()} zł.`;
-        }
     </script>
 </body>
 </html>
