@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zbiórka na samochód</title>
+    <title>Na samochód!</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,7 +41,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
-    <h2 id="main-title">Zbieram na nowy samochód! 🚗</h2>
+    <h2 id="main-title">Na nowy samochód! 🚗</h2>
     <p id="amount-info"></p>
     <p id="percentage-info"></p>
     <div id="chartContainer">
@@ -80,7 +80,7 @@
         const myChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Zebrane', 'Pozostałe'],
+                labels: ['Zebrane: ', 'Pozostałe: '],
                 datasets: [{
                     data: [procentZebrane, procentPozostale],
                     backgroundColor: ['#4CAF50', '#FF6347'],
