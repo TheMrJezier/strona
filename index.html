@@ -38,11 +38,11 @@
         }
         .dollar-symbol {
             position: fixed;
-            font-size: 24px;
+            font-size: 12px; /* Zmniejszona wielkość dolara */
             color: black;
             background-color: #00FF00; /* Zielone tło */
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 5px; /* Zmniejszone paddingi */
+            border-radius: 0; /* Kwadratowe krawędzie */
             pointer-events: none;
             font-weight: bold;
         }
@@ -81,9 +81,9 @@
         // Generowanie wykresu
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
-            type: 'pie',
+            type: 'pie', // Wykres kołowy
             data: {
-                labels: ['Zebrane: ', 'Pozostałe: '],
+                labels: ['Zebrane', 'Pozostałe'],
                 datasets: [{
                     data: [procentZebrane, procentPozostale],
                     backgroundColor: ['#4CAF50', '#FF6347'],
@@ -113,9 +113,9 @@
             document.body.appendChild(dollar);
 
             const randomX = Math.random() * window.innerWidth;
-            const randomDuration = 5 + Math.random() * 5;
+            const randomDuration = 4 + Math.random() * 4; // Zwiększenie czasu trwania animacji
             const randomRotation = Math.random() * 360; // Random angle of rotation
-            const randomScale = 0.7 + Math.random() * 0.6; // Random scale
+            const randomScale = 0.5 + Math.random() * 0.5; // Zmniejszenie skali
 
             dollar.style.left = `${randomX}px`;
             dollar.style.transform = `rotate(${randomRotation}deg) scale(${randomScale})`; // Rotacja i skalowanie
@@ -129,7 +129,7 @@
 
         // Animacja symboli dolara
         function startDollarRain() {
-            setInterval(createDollarSymbol, 150); // Tworzenie nowych symboli co 150 ms
+            setInterval(createDollarSymbol, 300); // Zmniejszenie częstotliwości na 300 ms
         }
 
         // Dodanie animacji CSS dla opadania dolarów z losowym ruchem
