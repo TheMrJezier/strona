@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <title>Na samochód!</title>
     <style>
         body {
@@ -38,11 +38,11 @@
         }
         .dollar-symbol {
             position: fixed;
-            font-size: 16px; /* Mniejszy rozmiar dolara */
+            font-size: 24px;
             color: black;
             background-color: #00FF00; /* Zielone tło */
-            padding: 3px 8px; /* Mniejsze paddingi */
-            border-radius: 0; /* Brak zaokrągleń */
+            padding: 5px 10px;
+            border-radius: 5px;
             pointer-events: none;
             font-weight: bold;
         }
@@ -114,17 +114,13 @@
 
             const randomX = Math.random() * window.innerWidth;
             const randomDuration = 5 + Math.random() * 5;
-            const randomOffsetX = (Math.random() - 0.5) * 200; // Ruch w poziomie
-            const randomStartY = Math.random() * -100; // Początkowa pozycja powyżej ekranu
+            const randomRotation = Math.random() * 360; // Random angle of rotation
+            const randomScale = 0.7 + Math.random() * 0.6; // Random scale
 
             dollar.style.left = `${randomX}px`;
-            dollar.style.top = `${randomStartY}px`;
-            dollar.style.transition = `transform ${randomDuration}s linear, top ${randomDuration}s linear`;
+            dollar.style.transform = `rotate(${randomRotation}deg) scale(${randomScale})`; // Rotacja i skalowanie
 
-            // Animacja ruchu
-            setTimeout(() => {
-                dollar.style.transform = `translateX(${randomOffsetX}px)`; // Losowy ruch w poziomie
-            }, 50); // Krótkie opóźnienie przed animacją
+            dollar.style.animation = `fall ${randomDuration}s linear`;
 
             setTimeout(() => {
                 dollar.remove(); // Usunięcie dolara po animacji
@@ -133,8 +129,26 @@
 
         // Animacja symboli dolara
         function startDollarRain() {
-            setInterval(createDollarSymbol, 300); // Tworzenie nowych symboli co 300 ms
+            setInterval(createDollarSymbol, 150); // Tworzenie nowych symboli co 150 ms
         }
+
+        // Dodanie animacji CSS dla opadania dolarów z losowym ruchem
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                0% {
+                    top: -50px;
+                    opacity: 1;
+                    transform: translateX(0px);
+                }
+                100% {
+                    top: 100vh;
+                    opacity: 0;
+                    transform: translateX(${Math.random() * 100 - 50}px); /* Losowy ruch w poziomie */
+                }
+            }
+        `;
+        document.head.appendChild(style);
 
         // Rozpoczęcie animacji "dolarów"
         startDollarRain();
