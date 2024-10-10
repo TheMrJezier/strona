@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Procent Zebranej Kwoty</title>
+    <title>Zbiórka na samochód</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,8 +41,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
-    <h1>Procent Zebranej Kwoty</h1>
-    <h2 id="main-title">Zbieramy na samochód!</h2>
+    <h2 id="main-title">Zbieram na nowy samochód! 🚗</h2>
     <p id="amount-info"></p>
     <p id="percentage-info"></p>
     <div id="chartContainer">
@@ -58,10 +57,10 @@
         const procentPozostale = 100 - procentZebrane;
 
         // Aktualizacja tekstu informującego o zebranej kwocie
-        document.getElementById("amount-info").innerHTML = `Potrzebujesz zebrać <strong>40,000 zł</strong>, zebrano już <strong>${kwotaZebrana.toLocaleString()} zł</strong>.`;
+        document.getElementById("amount-info").innerHTML = `Potrzebuję zebrać <strong>40,000 zł</strong>, zebrałem już <strong>${kwotaZebrana.toLocaleString()} zł</strong>.`;
 
         if (kwotaZebrana >= kwotaDocelowa) {
-            document.getElementById("main-title").innerHTML = "Gratulacje! Zebraliśmy całą kwotę na samochód!";
+            document.getElementById("main-title").innerHTML = "Gratulacje! Zebrałem całą kwotę na samochód!";
             document.getElementById("percentage-info").style.display = "none"; // Ukrycie informacji o brakujących środkach
 
             // Uruchomienie konfetti
@@ -73,7 +72,7 @@
                 resize: true
             });
         } else {
-            document.getElementById("percentage-info").innerHTML = `To jest ${procentZebrane.toFixed(1)}% zebranej kwoty. Brakuje jeszcze ${procentPozostale.toFixed(1)}%, czyli ${kwotaBrakujaca.toLocaleString()} zł.`;
+            document.getElementById("percentage-info").innerHTML = `To jest ${procentZebrane.toFixed(1)}% zebranej kwoty.<br>Brakuje jeszcze ${procentPozostale.toFixed(1)}%, czyli ${kwotaBrakujaca.toLocaleString()} zł.`;
         }
 
         // Generowanie wykresu
