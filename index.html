@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <title>Na samochód!</title>
     <style>
         body {
@@ -11,6 +11,7 @@
             background-color: #f4f4f9;
             margin: 0;
             padding: 20px;
+            overflow: hidden; /* Wyłączenie scrollowania */
         }
         h1 {
             color: #333;
@@ -61,16 +62,8 @@
 
         if (kwotaZebrana >= kwotaDocelowa) {
             document.getElementById("main-title").innerHTML = "Gratulacje! Zebrałem całą kwotę na samochód!";
+            document.getElementById("amount-info").style.display = "none";  // Ukrycie tekstu o zebranej kwocie
             document.getElementById("percentage-info").style.display = "none"; // Ukrycie informacji o brakujących środkach
-
-            // Uruchomienie konfetti
-            confetti({
-                particleCount: 200,
-                spread: 70,
-                origin: { y: 0.6 },
-                useWorker: true,
-                resize: true
-            });
         } else {
             document.getElementById("percentage-info").innerHTML = `To jest <b>${procentZebrane.toFixed(1)}%</b> zebranej kwoty.<br>Brakuje jeszcze <b>${procentPozostale.toFixed(1)}%</b>, czyli <b>${kwotaBrakujaca.toLocaleString()} zł</b>.`;
         }
@@ -101,6 +94,23 @@
             },
             plugins: [ChartDataLabels] 
         });
+
+        // Funkcja do ciągłego spadania konfetti
+        function startDollarRain() {
+            setInterval(function() {
+                confetti({
+                    particleCount: 2, // Liczba cząsteczek przy jednym wystrzale
+                    angle: 90, // Spadają pionowo
+                    spread: 55,
+                    origin: { x: Math.random(), y: 0 }, // Losowa pozycja startowa
+                    colors: ['#00FF00'], // Zielone jak dolary
+                    shapes: ['square'] // Używamy kwadratów jako prostego symbolu dolara
+                });
+            }, 200); // Częstotliwość wystrzałów, co 200 ms
+        }
+
+        // Rozpoczęcie animacji "dolarów"
+        startDollarRain();
     </script>
 </body>
 </html>
