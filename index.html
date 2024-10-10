@@ -82,11 +82,16 @@
             // Aktualizacja tekstu
             document.getElementById("amount-info").innerHTML = `Potrzebuję zebrać <strong>40,000 zł</strong>, zebrałem już <strong>${kwotaZebrana.toLocaleString()} zł</strong>.`;
 
+            // Warunek sprawdzający, czy kwota zebrana jest większa bądź równa docelowej
             if (kwotaZebrana >= kwotaDocelowa) {
                 document.getElementById("main-title").innerHTML = "Gratulacje! Zebrałem całą kwotę na samochód!";
                 document.getElementById("amount-info").style.display = "none";
                 document.getElementById("percentage-info").style.display = "none";
             } else {
+                // Wyświetl informacje, jeśli kwota nie jest równa lub większa od docelowej
+                document.getElementById("main-title").innerHTML = "Na nowy samochód! 🚗";
+                document.getElementById("amount-info").style.display = "block";
+                document.getElementById("percentage-info").style.display = "block";
                 document.getElementById("percentage-info").innerHTML = `To jest <b>${procentZebrane.toFixed(1)}%</b> zebranej kwoty.<br>Brakuje jeszcze <b>${procentPozostale.toFixed(1)}%</b>, czyli <b>${kwotaBrakujaca.toLocaleString()} zł</b>.`;
             }
 
