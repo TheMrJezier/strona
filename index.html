@@ -55,26 +55,6 @@
             opacity: 0.6; /* Zmniejszona widoczność */
             z-index: 0; /* Ustawienie dolara w tle */
         }
-        form {
-            margin-top: 20px;
-        }
-        input[type="number"] {
-            padding: 10px;
-            font-size: 16px;
-            width: 150px;
-            margin-right: 10px;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -89,35 +69,22 @@
     </div>
     <canvas id="confetti-canvas"></canvas>
 
-    <!-- Formularz do wprowadzania zebranej kwoty -->
-    <form id="update-form">
-        <input type="number" id="input-kwotaZebrana" placeholder="Kwota zebrana" min="0" required>
-        <input type="submit" value="Aktualizuj">
-    </form>
-
     <script>
         const kwotaDocelowa = 40000;  // Kwota do zebrania
-        let kwotaZebrana = 6000;      // Początkowa zebrana kwota (6 tys.)
+        const kwotaZebrana = 6000;     // Zmień tę wartość, aby zobaczyć różne komunikaty
+        const kwotaBrakujaca = kwotaDocelowa - kwotaZebrana;
+        const procentZebrane = (kwotaZebrana / kwotaDocelowa) * 100;
+        const procentPozostale = 100 - procentZebrane;
 
-        function updateInfo() {
-            const kwotaBrakujaca = kwotaDocelowa - kwotaZebrana;
-            const procentZebrane = (kwotaZebrana / kwotaDocelowa) * 100;
-            const procentPozostale = 100 - procentZebrane;
+        // Aktualizacja tekstu informującego o zebranej kwocie
+        document.getElementById("amount-info").innerHTML = `Potrzebuję zebrać <strong>40,000 zł</strong>, zebrałem już <strong>${kwotaZebrana.toLocaleString()} zł</strong>.`;
 
-            // Aktualizacja tekstu informującego o zebranej kwocie
-            document.getElementById("amount-info").innerHTML = `Potrzebuję zebrać <strong>40,000 zł</strong>, zebrałem już <strong>${kwotaZebrana.toLocaleString()} zł</strong>.`;
-
-            if (kwotaZebrana >= kwotaDocelowa) {
-                document.getElementById("main-title").innerHTML = "Gratulacje! Zebrałem całą kwotę na samochód!";
-                document.getElementById("amount-info").style.display = "none";  // Ukrycie tekstu o zebranej kwocie
-                document.getElementById("percentage-info").style.display = "none"; // Ukrycie informacji o brakujących środkach
-            } else {
-                document.getElementById("percentage-info").innerHTML = `To jest <b>${procentZebrane.toFixed(1)}%</b> zebranej kwoty.<br>Brakuje jeszcze <b>${procentPozostale.toFixed(1)}%</b>, czyli <b>${kwotaBrakujaca.toLocaleString()} zł</b>.`;
-            }
-
-            // Aktualizacja wykresu
-            myChart.data.datasets[0].data = [procentZebrane, procentPozostale];
-            myChart.update();
+        if (kwotaZebrana >= kwotaDocelowa) {
+            document.getElementById("main-title").innerHTML = "Gratulacje! Zebrałem całą kwotę na samochód!";
+            document.getElementById("amount-info").style.display = "none";  // Ukrycie tekstu o zebranej kwocie
+            document.getElementById("percentage-info").style.display = "none"; // Ukrycie informacji o brakujących środkach
+        } else {
+            document.getElementById("percentage-info").innerHTML = `To jest <b>${procentZebrane.toFixed(1)}%</b> zebranej kwoty.<br>Brakuje jeszcze <b>${procentPozostale.toFixed(1)}%</b>, czyli <b>${kwotaBrakujaca.toLocaleString()} zł</b>.`;
         }
 
         // Generowanie wykresu
@@ -127,7 +94,7 @@
             data: {
                 labels: ['Zebrane', 'Pozostałe'],
                 datasets: [{
-                    data: [(kwotaZebrana / kwotaDocelowa) * 100, 100 - (kwotaZebrana / kwotaDocelowa) * 100],
+                    data: [procentZebrane, procentPozostale],
                     backgroundColor: ['#4CAF50', '#FF6347'],
                     borderColor: ['#000', '#000'],
                     borderWidth: 1
@@ -145,14 +112,6 @@
                 }
             },
             plugins: [ChartDataLabels] 
-        });
-
-        // Obsługa formularza
-        document.getElementById('update-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Zapobiegamy przeładowaniu strony
-            const nowaKwota = document.getElementById('input-kwotaZebrana').value;
-            kwotaZebrana = parseFloat(nowaKwota);
-            updateInfo(); // Aktualizacja kwoty i wykresu
         });
 
         // Funkcja do tworzenia i animowania symboli dolara
@@ -194,4 +153,14 @@
                 100% {
                     top: 100vh;
                     opacity: 0;
-                    transform: translateX
+                    transform: translateX(${Math.random() * 100 - 50}px); /* Losowy ruch w poziomie */
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Rozpoczęcie animacji "dolarów"
+        startDollarRain();
+    </script>
+</body>
+</html>
