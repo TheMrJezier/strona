@@ -43,24 +43,25 @@
 <body>
     <h1>Procent Zebranej Kwoty</h1>
     <h2 id="main-title">Zbieramy na samochód!</h2>
-    <p id="amount-info">Potrzebujesz zebrać 40,000 zł, zebrano już 6,000 zł.</p>
-    <p id="percentage-info">To jest 15% zebranej kwoty. Brakuje jeszcze 85%, czyli 34,000 zł.</p>
+    <p id="amount-info"></p>
+    <p id="percentage-info"></p>
     <div id="chartContainer">
         <canvas id="myChart"></canvas>
     </div>
     <canvas id="confetti-canvas"></canvas>
 
     <script>
-        const kwotaDocelowa = 40000;
-        const kwotaZebrana = 6000;  // Zmień na 40000, aby przetestować konfetti
+        const kwotaDocelowa = 40000;  // Kwota do zebrania
+        const kwotaZebrana = 6000;     // Zmień tę wartość, aby zobaczyć różne komunikaty
         const kwotaBrakujaca = kwotaDocelowa - kwotaZebrana;
         const procentZebrane = (kwotaZebrana / kwotaDocelowa) * 100;
         const procentPozostale = 100 - procentZebrane;
 
-        // Sprawdzenie, czy kwota docelowa została osiągnięta
+        // Aktualizacja tekstu informującego o zebranej kwocie
+        document.getElementById("amount-info").innerHTML = `Potrzebujesz zebrać <strong>40,000 zł</strong>, zebrano już <strong>${kwotaZebrana.toLocaleString()} zł</strong>.`;
+
         if (kwotaZebrana >= kwotaDocelowa) {
             document.getElementById("main-title").innerHTML = "Gratulacje! Zebraliśmy całą kwotę na samochód!";
-            document.getElementById("amount-info").style.display = "none";  // Ukrycie informacji o potrzebnej kwocie
             document.getElementById("percentage-info").style.display = "none"; // Ukrycie informacji o brakujących środkach
 
             // Uruchomienie konfetti
@@ -72,8 +73,6 @@
                 resize: true
             });
         } else {
-            // Aktualizacja tekstu, gdy nie osiągnięto celu
-            document.getElementById("amount-info").innerHTML = `Potrzebujesz zebrać 40,000 zł, zebrano już ${kwotaZebrana.toLocaleString()} zł.`;
             document.getElementById("percentage-info").innerHTML = `To jest ${procentZebrane.toFixed(1)}% zebranej kwoty. Brakuje jeszcze ${procentPozostale.toFixed(1)}%, czyli ${kwotaBrakujaca.toLocaleString()} zł.`;
         }
 
