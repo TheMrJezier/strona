@@ -44,14 +44,15 @@
         }
         .dollar-symbol {
             position: absolute; /* Ustawienie na absolute, aby leciały w tle */
-            font-size: 12px; /* Zmniejszona wielkość dolara */
+            font-size: 10px; /* Jeszcze mniejsza wielkość dolara */
             color: black;
             background-color: #00FF00; /* Zielone tło */
-            padding: 5px 15px; /* Zmniejszone paddingi oraz zwiększona szerokość */
-            border-radius: 0; /* Kwadratowe krawędzie */
+            padding: 5px 15px;
+            border-radius: 0;
             pointer-events: none;
             font-weight: bold;
-            text-align: center; /* Wyśrodkowanie tekstu w prostokącie */
+            text-align: center;
+            opacity: 0.6; /* Zmniejszona widoczność */
             z-index: 0; /* Ustawienie dolara w tle */
         }
     </style>
@@ -121,9 +122,9 @@
             document.body.appendChild(dollar);
 
             const randomX = Math.random() * window.innerWidth;
-            const randomDuration = 4 + Math.random() * 4; // Zwiększenie czasu trwania animacji
+            const randomDuration = 6 + Math.random() * 6; // Dłuższy czas animacji
             const randomRotation = Math.random() * 360; // Random angle of rotation
-            const randomScale = 0.5 + Math.random() * 0.5; // Zmniejszenie skali
+            const randomScale = 0.4 + Math.random() * 0.4; // Zmniejszenie skali
 
             dollar.style.left = `${randomX}px`;
             dollar.style.transform = `rotate(${randomRotation}deg) scale(${randomScale})`; // Rotacja i skalowanie
@@ -137,7 +138,7 @@
 
         // Animacja symboli dolara
         function startDollarRain() {
-            setInterval(createDollarSymbol, 300); // Zmniejszenie częstotliwości na 300 ms
+            setInterval(createDollarSymbol, 500); // Zmniejszona częstotliwość pojawiania się dolarów
         }
 
         // Dodanie animacji CSS dla opadania dolarów z losowym ruchem
