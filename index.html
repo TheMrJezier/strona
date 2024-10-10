@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <title>Na samochód!</title>
     <style>
         body {
@@ -39,8 +39,12 @@
         .dollar-symbol {
             position: fixed;
             font-size: 24px;
-            color: #00FF00; /* Zielony kolor dla dolara */
+            color: black;
+            background-color: #00FF00; /* Zielone tło */
+            padding: 5px 10px;
+            border-radius: 5px;
             pointer-events: none;
+            font-weight: bold;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -58,7 +62,7 @@
 
     <script>
         const kwotaDocelowa = 40000;  // Kwota do zebrania
-        const kwotaZebrana = 40000;     // Zmień tę wartość, aby zobaczyć różne komunikaty
+        const kwotaZebrana = 6000;     // Zmień tę wartość, aby zobaczyć różne komunikaty
         const kwotaBrakujaca = kwotaDocelowa - kwotaZebrana;
         const procentZebrane = (kwotaZebrana / kwotaDocelowa) * 100;
         const procentPozostale = 100 - procentZebrane;
@@ -110,8 +114,12 @@
 
             const randomX = Math.random() * window.innerWidth;
             const randomDuration = 5 + Math.random() * 5;
+            const randomRotation = Math.random() * 360; // Random angle of rotation
+            const randomScale = 0.7 + Math.random() * 0.6; // Random scale
 
             dollar.style.left = `${randomX}px`;
+            dollar.style.transform = `rotate(${randomRotation}deg) scale(${randomScale})`; // Rotacja i skalowanie
+
             dollar.style.animation = `fall ${randomDuration}s linear`;
 
             setTimeout(() => {
@@ -121,20 +129,22 @@
 
         // Animacja symboli dolara
         function startDollarRain() {
-            setInterval(createDollarSymbol, 200); // Tworzenie nowych symboli co 200 ms
+            setInterval(createDollarSymbol, 150); // Tworzenie nowych symboli co 150 ms
         }
 
-        // Dodanie animacji CSS dla opadania dolarów
+        // Dodanie animacji CSS dla opadania dolarów z losowym ruchem
         const style = document.createElement('style');
         style.innerHTML = `
             @keyframes fall {
                 0% {
                     top: -50px;
                     opacity: 1;
+                    transform: translateX(0px);
                 }
                 100% {
                     top: 100vh;
                     opacity: 0;
+                    transform: translateX(${Math.random() * 100 - 50}px); /* Losowy ruch w poziomie */
                 }
             }
         `;
