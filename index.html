@@ -46,6 +46,7 @@
             pointer-events: none;
             font-weight: bold;
             text-align: center; /* Wyśrodkowanie tekstu w prostokącie */
+            z-index: 0; /* Ustawienie dolara w tle */
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -63,7 +64,7 @@
 
     <script>
         const kwotaDocelowa = 40000;  // Kwota do zebrania
-        const kwotaZebrana = 6000;     // Zmień tę wartość, aby zobaczyć różne komunikaty
+        const kwotaZebrana = 40000;     // Zmień tę wartość, aby zobaczyć różne komunikaty
         const kwotaBrakujaca = kwotaDocelowa - kwotaZebrana;
         const procentZebrane = (kwotaZebrana / kwotaDocelowa) * 100;
         const procentPozostale = 100 - procentZebrane;
@@ -72,7 +73,7 @@
         document.getElementById("amount-info").innerHTML = `Potrzebuję zebrać <strong>40,000 zł</strong>, zebrałem już <strong>${kwotaZebrana.toLocaleString()} zł</strong>.`;
 
         if (kwotaZebrana >= kwotaDocelowa) {
-            document.getElementById("main-title").innerHTML = "Zebrałem całą kwotę na samochód! 😎";
+            document.getElementById("main-title").innerHTML = "Gratulacje! Zebrałem całą kwotę na samochód!";
             document.getElementById("amount-info").style.display = "none";  // Ukrycie tekstu o zebranej kwocie
             document.getElementById("percentage-info").style.display = "none"; // Ukrycie informacji o brakujących środkach
         } else {
