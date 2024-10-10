@@ -26,6 +26,8 @@
         #chartContainer {
             max-width: 500px;
             margin: auto;
+            position: relative; /* Dodano dla kontekstu pozycji */
+            z-index: 2; /* Ustawienie wykresu na wierzchu */
         }
         #confetti-canvas {
             position: fixed;
@@ -37,7 +39,7 @@
             z-index: 9999;
         }
         .dollar-symbol {
-            position: fixed;
+            position: absolute; /* Ustawienie na absolute, aby leciały w tle */
             font-size: 12px; /* Zmniejszona wielkość dolara */
             color: black;
             background-color: #00FF00; /* Zielone tło */
