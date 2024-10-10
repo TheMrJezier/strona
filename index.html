@@ -66,7 +66,12 @@
 
     <script>
         const kwotaDocelowa = 40000;  // Kwota do zebrania
-        let kwotaZebrana = 6000;      // Początkowa zebrana kwota (6 tys.)
+        let kwotaZebrana = 6000;      // Domyślna kwota (można ją nadpisać danymi z LocalStorage)
+
+        // Sprawdzenie, czy w LocalStorage jest zapisana kwota
+        if (localStorage.getItem('kwotaZebrana')) {
+            kwotaZebrana = parseFloat(localStorage.getItem('kwotaZebrana'));
+        }
 
         // Funkcja aktualizująca informacje i wykres
         function updateInfo() {
@@ -116,6 +121,10 @@
             e.preventDefault();
             const nowaKwota = document.getElementById('input-kwotaZebrana').value;
             kwotaZebrana = parseFloat(nowaKwota);
+
+            // Zapisanie nowej kwoty w LocalStorage
+            localStorage.setItem('kwotaZebrana', kwotaZebrana);
+
             updateInfo(); // Aktualizacja danych na stronie i wykresu
         });
 
