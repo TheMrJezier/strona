@@ -11,49 +11,20 @@
             background-color: #f4f4f9;
             margin: 0;
             padding: 20px;
-            overflow: hidden; /* Wyłączenie scrollowania */
         }
         h1 {
             color: #333;
         }
         h2 {
             color: #4CAF50;
-            z-index: 1; /* Ustawienie wyżej niż dolary */
-            position: relative; /* Dodano dla kontekstu pozycji */
         }
         p {
             font-size: 18px;
             color: #555;
-            z-index: 1; /* Ustawienie wyżej niż dolary */
-            position: relative; /* Dodano dla kontekstu pozycji */
         }
         #chartContainer {
             max-width: 500px;
             margin: auto;
-            position: relative; /* Dodano dla kontekstu pozycji */
-            z-index: 2; /* Ustawienie wykresu na wierzchu */
-        }
-        #confetti-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        .dollar-symbol {
-            position: absolute; /* Ustawienie na absolute, aby leciały w tle */
-            font-size: 10px; /* Jeszcze mniejsza wielkość dolara */
-            color: black;
-            background-color: #00FF00; /* Zielone tło */
-            padding: 2px 8px; /* Zmniejszone paddingi, aby prostokąt był mniejszy */
-            border-radius: 0;
-            pointer-events: none;
-            font-weight: bold;
-            text-align: center;
-            opacity: 0.6; /* Zmniejszona widoczność */
-            z-index: 0; /* Ustawienie dolara w tle */
         }
         form {
             margin-top: 20px;
@@ -76,9 +47,8 @@
             background-color: #45a049;
         }
     </style>
+    <!-- Załadowanie Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <h2 id="main-title">Na nowy samochód! 🚗</h2>
@@ -87,7 +57,6 @@
     <div id="chartContainer">
         <canvas id="myChart"></canvas>
     </div>
-    <canvas id="confetti-canvas"></canvas>
 
     <!-- Formularz do wprowadzania zebranej kwoty -->
     <form id="update-form">
@@ -99,29 +68,29 @@
         const kwotaDocelowa = 40000;  // Kwota do zebrania
         let kwotaZebrana = 6000;      // Początkowa zebrana kwota (6 tys.)
 
-        // Funkcja aktualizująca informacje na stronie
+        // Funkcja aktualizująca informacje i wykres
         function updateInfo() {
             const kwotaBrakujaca = kwotaDocelowa - kwotaZebrana;
             const procentZebrane = (kwotaZebrana / kwotaDocelowa) * 100;
             const procentPozostale = 100 - procentZebrane;
 
-            // Aktualizacja tekstu informującego o zebranej kwocie
+            // Aktualizacja tekstu
             document.getElementById("amount-info").innerHTML = `Potrzebuję zebrać <strong>40,000 zł</strong>, zebrałem już <strong>${kwotaZebrana.toLocaleString()} zł</strong>.`;
 
             if (kwotaZebrana >= kwotaDocelowa) {
                 document.getElementById("main-title").innerHTML = "Gratulacje! Zebrałem całą kwotę na samochód!";
-                document.getElementById("amount-info").style.display = "none";  // Ukrycie tekstu o zebranej kwocie
-                document.getElementById("percentage-info").style.display = "none"; // Ukrycie informacji o brakujących środkach
+                document.getElementById("amount-info").style.display = "none";
+                document.getElementById("percentage-info").style.display = "none";
             } else {
                 document.getElementById("percentage-info").innerHTML = `To jest <b>${procentZebrane.toFixed(1)}%</b> zebranej kwoty.<br>Brakuje jeszcze <b>${procentPozostale.toFixed(1)}%</b>, czyli <b>${kwotaBrakujaca.toLocaleString()} zł</b>.`;
             }
 
-            // Aktualizacja wykresu
+            // Aktualizacja danych wykresu
             myChart.data.datasets[0].data = [procentZebrane, procentPozostale];
             myChart.update();
         }
 
-        // Generowanie wykresu
+        // Konfiguracja wykresu
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'pie', // Wykres kołowy
@@ -137,63 +106,21 @@
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: 'top' },
-                    datalabels: {
-                        color: '#fff',
-                        formatter: (value) => value.toFixed(1) + '%',
-                        font: { weight: 'bold' }
-                    }
+                    legend: { position: 'top' }
                 }
-            },
-            plugins: [ChartDataLabels] 
+            }
         });
 
         // Obsługa formularza
         document.getElementById('update-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Zapobiegamy przeładowaniu strony
+            e.preventDefault();
             const nowaKwota = document.getElementById('input-kwotaZebrana').value;
             kwotaZebrana = parseFloat(nowaKwota);
-            updateInfo(); // Aktualizacja kwoty i wykresu
+            updateInfo(); // Aktualizacja danych na stronie i wykresu
         });
 
-        // Wywołanie funkcji updateInfo, aby na początku ustawić dane
+        // Wywołanie funkcji na start
         updateInfo();
-
-        // Funkcja do tworzenia i animowania symboli dolara
-        function createDollarSymbol() {
-            const dollar = document.createElement('div');
-            dollar.className = 'dollar-symbol';
-            dollar.innerHTML = '$';
-            document.body.appendChild(dollar);
-
-            const randomX = Math.random() * window.innerWidth;
-            const randomDuration = 6 + Math.random() * 6; // Dłuższy czas animacji
-            const randomRotation = Math.random() * 360; // Random angle of rotation
-            const randomScale = 0.4 + Math.random() * 0.4; // Zmniejszenie skali
-
-            dollar.style.left = `${randomX}px`;
-            dollar.style.transform = `rotate(${randomRotation}deg) scale(${randomScale})`; // Rotacja i skalowanie
-
-            dollar.style.animation = `fall ${randomDuration}s linear`;
-
-            setTimeout(() => {
-                dollar.remove(); // Usunięcie dolara po animacji
-            }, randomDuration * 1000);
-        }
-
-        // Animacja symboli dolara
-        function startDollarRain() {
-            setInterval(createDollarSymbol, 500); // Zmniejszona częstotliwość pojawiania się dolarów
-        }
-
-        // Dodanie animacji CSS dla opadania dolarów z losowym ruchem
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes fall {
-                0% {
-                    top: -50px;
-                    opacity: 1;
-                    transform: translateX(0px);
-                }
-                100% {
-                    top: 100vh
+    </script>
+</body>
+</html>
