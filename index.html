@@ -25,6 +25,8 @@
     </style>
     <!-- Dodanie biblioteki Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Dodanie wtyczki do wyświetlania wartości na wykresie -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 </head>
 <body>
     <h1>Procent Zebranej Kwoty</h1>
@@ -60,17 +62,18 @@
                     legend: {
                         position: 'top',
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.raw || 0;
-                                return `${label}: ${value.toFixed(1)}%`;
-                            }
+                    datalabels: {
+                        color: '#fff',
+                        formatter: (value, context) => {
+                            return value.toFixed(1) + '%'; // Wyświetlenie wartości w procentach
+                        },
+                        font: {
+                            weight: 'bold'
                         }
                     }
                 }
-            }
+            },
+            plugins: [ChartDataLabels] // Włączenie wtyczki
         });
     </script>
 </body>
